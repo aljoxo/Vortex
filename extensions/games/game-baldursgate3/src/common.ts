@@ -80,7 +80,7 @@ export const INVALID_LO_MOD_TYPES = [
   "bg3-replacer",
   "bg3-loose",
   "dinput",
-  "bg3-se-config"
+  "bg3-se-config",
 ];
 
 export const IGNORE_PATTERNS = [path.join("**", "info.json")];

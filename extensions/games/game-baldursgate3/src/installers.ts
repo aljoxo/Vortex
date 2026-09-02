@@ -278,35 +278,24 @@ export async function installReplacer(files: string[]): Promise<types.IInstallRe
 }
 
 function splitArchivePath(filePath: string): string[] {
-  return filePath
-    .split(/[\\/]+/)
-    .filter((segment) => segment.length > 0);
+  return filePath.split(/[\\/]+/).filter((segment) => segment.length > 0);
 }
 
-export function findSEConfigRoot(
-  files: string[],
-): string | undefined {
+export function findSEConfigRoot(files: string[]): string | undefined {
   const match = files.find((file) => {
     const segments = splitArchivePath(file);
 
-    return (
-      segments.length > 1 &&
-      SE_CONFIG_FILES.includes(segments[0].toLowerCase())
-    );
+    return segments.length > 1 && SE_CONFIG_FILES.includes(segments[0].toLowerCase());
   });
 
-  return match !== undefined
-    ? splitArchivePath(match)[0]
-    : undefined;
+  return match !== undefined ? splitArchivePath(match)[0] : undefined;
 }
 
 export async function testSEConfig(
   files: string[],
   gameId: string,
 ): Promise<types.ISupportedResult> {
-  const supported =
-    gameId === GAME_ID &&
-    findSEConfigRoot(files) !== undefined;
+  const supported = gameId === GAME_ID && findSEConfigRoot(files) !== undefined;
 
   return Promise.resolve({
     supported,
@@ -314,31 +303,20 @@ export async function testSEConfig(
   });
 }
 
-export async function installSEConfig(
-  files: string[],
-): Promise<types.IInstallResult> {
+export async function installSEConfig(files: string[]): Promise<types.IInstallResult> {
   const rootName = findSEConfigRoot(files);
 
   if (rootName === undefined) {
-    throw new Error(
-      "The archive does not contain an SE_CONFIG or Script Extender folder",
-    );
+    throw new Error("The archive does not contain an SE_CONFIG or Script Extender folder");
   }
 
   const instructions: types.IInstruction[] = files
-    .filter(
-      (file) =>
-        !file.endsWith("/") &&
-        !file.endsWith("\\"),
-    )
+    .filter((file) => !file.endsWith("/") && !file.endsWith("\\"))
     .map((file) => {
       const segments = splitArchivePath(file);
-      const stripRoot =
-        segments[0].toLowerCase() === rootName.toLowerCase();
+      const stripRoot = segments[0].toLowerCase() === rootName.toLowerCase();
 
-      const destination = stripRoot
-        ? path.join(...segments.slice(1))
-        : file;
+      const destination = stripRoot ? path.join(...segments.slice(1)) : file;
 
       return {
         type: "copy",
