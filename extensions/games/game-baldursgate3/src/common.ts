@@ -116,4 +116,4 @@ export const LSLIB_FILES = new Set(["divine.exe", "lslib.dll"]);
 
 export const NOTIF_IMPORT_ACTIVITY = "bg3-loadorder-import-activity";
 
-export const SE_CONFIG_FILES = ["script extender", "se_config"];
+export const SE_CONFIG_FILES = ['script extender', 'se_config']
